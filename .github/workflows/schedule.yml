@@ -23,9 +23,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: List repository files
+        run: ls -R
+
       - name: Run Notion page creation script
         run: |
-          python create_notion_page.py
+          python src/create_notion_page.py
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
+
