@@ -1,33 +1,42 @@
-name: Schedule Notion Page Creation
+name: Notion Data Sync
 
 on:
+  workflow_dispatch:
   schedule:
-    # 每天 UTC 00:00 时运行，等同于北京时间早上8点
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *" # 每天上午 8 点运行
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  run-notion-job:
+  notion_sync:
+    name: Notion Sync
     runs-on: ubuntu-latest
     env:
-        NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-        DATABASE_ID: ${{ secrets.DATABASE_ID }}
+      NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      DATABASE_ID: ${{ secrets.DATABASE_ID }}
+      REF: ${{ github.ref }}
+      REPOSITORY: ${{ github.repository }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: 3.12
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: List repository files
-        run: ls -R
-
-      - name: Run Notion page creation script
+      - name: Debug repository structure
         run: |
-          notion
+          pwd
+          ls -R
+
+      - name: Notion data sync
+        run: |
+          python src/notion.py
