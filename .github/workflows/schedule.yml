@@ -30,6 +30,6 @@ jobs:
 
       - name: Run Notion page creation script
         run: |
-          create_notion_page
+          notion
         
 
