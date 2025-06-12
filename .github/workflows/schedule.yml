@@ -3,7 +3,7 @@ name: Notion Data Sync
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 19 * * *" # 每天上午 3 点运行
+    - cron: "0 0 * * *" # 每天上午 3 点运行
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
