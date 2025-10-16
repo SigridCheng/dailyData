@@ -2,7 +2,6 @@ import os
 import requests
 import datetime
 from dotenv import load_dotenv
-import pytz
 import time
 
 # 加载环境变量
@@ -22,8 +21,14 @@ headers = {
     "Notion-Version": "2022-06-28"  # 使用合适的Notion API版本
 }
 
-china_tz = pytz.timezone("Asia/Shanghai")
-today_date = datetime.datetime.now(china_tz).strftime("%Y-%m-%d")
+# UTC+8 偏移量
+def get_china_date():
+    """获取 UTC+8 中国时区的当前日期"""
+    utc_now = datetime.datetime.utcnow()
+    china_now = utc_now + datetime.timedelta(hours=8)
+    return china_now.strftime("%Y-%m-%d")
+
+today_date = get_china_date()
 
 # 查询数据库，看看是否已经存在今天的页面
 def check_existing_page():
