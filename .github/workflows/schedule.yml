@@ -2,7 +2,7 @@ name: Notion Data Sync
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 4 * * *" # 每天 UTC 04:30（中国时间 12:30）运行
+    - cron: "30 16 * * *" # 每天 UTC 04:30（中国时间 12:30）运行
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
